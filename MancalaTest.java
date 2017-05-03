@@ -216,6 +216,22 @@ public class MancalaTest {
 
 				mainFrame.remove(styleChoice);
 				mainFrame.add(board);
+				
+				BoardStyle b = new BoardStyleB();
+				
+				a1.setStyle(b);
+				a2.setStyle(b);
+				a3.setStyle(b);
+				a4.setStyle(b);
+				a5.setStyle(b);
+				a6.setStyle(b);
+				b1.setStyle(b);
+				b2.setStyle(b);
+				b3.setStyle(b);
+				b4.setStyle(b);
+				b5.setStyle(b);
+				b6.setStyle(b);
+				
 				mainFrame.pack();
 				mainFrame.repaint();
 			}
@@ -293,8 +309,30 @@ public class MancalaTest {
 				if (test.model.checkGameOver()) {
 					Player winner = test.model.declareWinner();
 					//dump the frame here
-					
+					mainFrame.setVisible(false);
+					JFrame endFrame = new JFrame();
+					endFrame.setMinimumSize(new Dimension(1100,600));
+					endFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					endFrame.setResizable(false);
 					//Display winner onto the screen here
+					String declare;
+					if(winner.equals(Player.ONE))
+					{
+						declare = "Player A wins!";
+					}
+					else if(winner.equals(Player.TWO))
+					{
+						declare = "Player B wins!";
+					}
+					else declare = "Tie Game!";
+					
+					Font f = new Font(Font.SERIF,Font.PLAIN,64);
+					JTextArea j = new JTextArea(declare);
+					j.setFont(f);
+					endFrame.add(j);
+					endFrame.pack();
+					endFrame.setVisible(true);
+					endFrame.repaint();
 				}
 
 				mainFrame.repaint();

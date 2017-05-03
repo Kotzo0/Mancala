@@ -47,6 +47,11 @@ public class MancalaIcon implements Icon, ChangeListener {
 		g2.draw(mancala);
 		g2.drawString(name, x + 30 , getIconHeight());
 		g2.drawString(value + "", x + 30 , getIconHeight() + y);
+		if(model.getCurrentPlayer().equals(player))
+		{
+			g2.drawString("Current Player", x + 30 , 2*getIconHeight() + 20);
+		}
+		
 		c.repaint();
 		
 	}
