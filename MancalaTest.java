@@ -290,7 +290,7 @@ public class MancalaTest {
 					if (test.model.getCurrentPlayer() == Player.TWO)
 						test.model.makeMove(test.model.getCurrentPlayer(), 5);
 				}
-				if (checkGameOver) {
+				if (test.model.checkGameOver()) {
 					Player winner = test.model.declareWinner();
 					//dump the frame here
 					
