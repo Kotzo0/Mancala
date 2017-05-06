@@ -324,16 +324,18 @@ public class MancalaTest {
 					endFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					endFrame.setResizable(false);
 					//Display winner onto the screen here
-					String declare;
+					String declare = "A: " + test.model.getMancalaValue(Player.ONE) + " B: " +test.model.getMancalaValue(Player.TWO) + "\n";
 					if(winner.equals(Player.ONE))
 					{
-						declare = "Player A wins!";
+						declare += "Player A wins!";
+						
 					}
 					else if(winner.equals(Player.TWO))
 					{
-						declare = "Player B wins!";
+						declare += "Player B wins!\n";
+						
 					}
-					else declare = "Tie Game!";
+					else declare += "Tie Game!";
 					
 					Font f = new Font(Font.SERIF,Font.PLAIN,64);
 					JTextArea j = new JTextArea(declare);

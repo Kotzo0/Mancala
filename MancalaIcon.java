@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.*;
@@ -81,6 +82,15 @@ public class MancalaIcon implements Icon, ChangeListener {
 		if(model.getCurrentPlayer().equals(player))
 		{
 			g2.drawString("Current Player", x + 30 , 2*getIconHeight() + 20);
+		}
+		for(int i = 0; i < value; i++)
+		{
+			if (i < 10)
+			g2.draw(new Ellipse2D.Double(x +20 + i*15,height, 15, 15));
+			else if (i < 20) g2.draw(new Ellipse2D.Double(x+20 + (i-10)*15,height + 15, 15, 15));
+			else if (i < 30) g2.draw(new Ellipse2D.Double(x+20 + (i-20)*15,height + 30, 15, 15));
+			else if (i < 40) g2.draw(new Ellipse2D.Double(x+20 + (i-30)*15,height + 45, 15, 15));
+			else if (i < 50) g2.draw(new Ellipse2D.Double(x+20 + (i-40)*15,height + 60, 15, 15));
 		}
 		
 		c.repaint();

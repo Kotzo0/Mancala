@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.*;
@@ -10,7 +11,7 @@ import javax.swing.event.*;
  *
  */
 public class PitIcon implements Icon, ChangeListener {
-	
+
 	private Rectangle2D.Double pit;
 	private int width;
 	private int height;
@@ -20,7 +21,7 @@ public class PitIcon implements Icon, ChangeListener {
 	private Player pitPlayer;
 	private int value;
 	private BoardStyle style;
-	
+
 	/**
 	 * constructor for a PitIcon
 	 * @param x the origin of the icon
@@ -41,7 +42,7 @@ public class PitIcon implements Icon, ChangeListener {
 		this.model = model;
 		value = 0;
 	}
-	
+
 	/**
 	 * set the model for this pit
 	 * @param model the model you want to assign for this pit
@@ -58,7 +59,7 @@ public class PitIcon implements Icon, ChangeListener {
 	 * @return value of height
 	 */
 	public int getIconHeight() {
-		
+
 		return height;
 	}
 
@@ -68,7 +69,7 @@ public class PitIcon implements Icon, ChangeListener {
 	 * @return value of width
 	 */
 	public int getIconWidth() {
-		
+
 		return width;
 	}
 	/**
@@ -94,9 +95,17 @@ public class PitIcon implements Icon, ChangeListener {
 		g2.fill(pit);
 		g2.setColor(Color.BLACK);
 		g2.drawString(name, getIconWidth()/2 - 10, getIconHeight());
-		g2.drawString(value + "",getIconWidth()/2,y/2+getIconHeight());
+		g2.drawString(value + "",getIconWidth()/2,3*y/2+getIconHeight());
+		g2.setColor(Color.BLACK);
+		for(int i = 0; i < value; i++)
+		{
+			if (i < 5)
+			g2.draw(new Ellipse2D.Double(x + i*15,height, 15, 15));
+			else if (i < 10) g2.draw(new Ellipse2D.Double(x + (i-5)*15,height + 15, 15, 15));
+			else g2.draw(new Ellipse2D.Double(x + (i-10)*15,height + 30, 15, 15));
+		}
 		c.repaint();
-		
+
 	}
 
 
@@ -106,7 +115,7 @@ public class PitIcon implements Icon, ChangeListener {
 	 */
 	public void stateChanged(ChangeEvent arg0) {
 		value = model.getPitValue(pitPlayer, pitNumber);
-		
+
 	}
 
 }

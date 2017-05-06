@@ -137,6 +137,8 @@ public class MancalaModel {
 		}
 		if(one == 0 || two == 0)
 		{
+			playerOneMancala += one;
+			playerTwoMancala += two;
 			return true;
 		}
 		else return false;
