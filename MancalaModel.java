@@ -301,7 +301,7 @@ public class MancalaModel {
 					madeMoveThisTurn = false;
 					return true;
 				}
-				else if(currentPlayer.equals(Player.ONE) && currentPits[pitNumber] == 1)
+				else if(currentPlayer.equals(Player.ONE) && currentPits[pitNumber] == 1 && currentPits.equals(playerOnePits))
 				{
 					int total = 1 + playerTwoPits[5-pitNumber];
 					playerOnePits[pitNumber] = 0;
@@ -310,12 +310,12 @@ public class MancalaModel {
 					notifyListeners();
 					return false;
 				}
-				else if(currentPlayer.equals(Player.TWO) && currentPits[pitNumber] == 1)
+				else if(currentPlayer.equals(Player.TWO) && currentPits[pitNumber] == 1 && currentPits.equals(playerTwoPits))
 				{
 					int total = 1 + playerOnePits[5-pitNumber];
 					playerTwoPits[pitNumber] = 0;
 					playerOnePits[5-pitNumber] = 0;
-					playerOneMancala += total;
+					playerTwoMancala += total;
 					notifyListeners();
 					return false;
 				}
