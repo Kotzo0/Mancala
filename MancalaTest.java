@@ -4,12 +4,21 @@ import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
+/**
+ * Context for running mancala game; contains the model and view; board has a fixed size
+ * @author Justin Benassi, Warren Liang
+ *
+ */
 public class MancalaTest {
 
 	private int startingBeads = 0;
 	private BoardStyle style;
 	private MancalaModel model;
 
+	/**
+	 * main context for running mancala game
+	 * @param args serves no function for this main
+	 */
 	public static void main(String[] args) {
 
 		MancalaTest test = new MancalaTest();

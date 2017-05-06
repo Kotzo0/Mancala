@@ -4,6 +4,11 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.*;
 import javax.swing.event.*;
 
+/**
+ * class for drawing a mancala pit
+ * @author Justin Benassi, Warren Liang
+ *
+ */
 public class MancalaIcon implements Icon, ChangeListener {
 	
 	private Rectangle2D.Double mancala;
@@ -14,7 +19,14 @@ public class MancalaIcon implements Icon, ChangeListener {
 	private int value;
 	private MancalaModel model;
 
-	
+	/**
+	 * constructor for a MancalaIcon
+	 * @param x the origin of the icon
+	 * @param y the y origin of the icon
+	 * @param name the title of the pit
+	 * @param player the player that the pit belongs to
+	 * @param model the model that the pit listens to for changes
+	 */
 	public MancalaIcon(int x, int y,String name,Player player,MancalaModel model)
 	{
 		width = 150;
@@ -27,21 +39,40 @@ public class MancalaIcon implements Icon, ChangeListener {
 	}
 
 	@Override
+	/**
+	 * getter for icon height
+	 * @return the value of the icons height
+	 */
 	public int getIconHeight() {
 		return height;
 	}
 
 	@Override
+	/**
+	 * getter for icon width
+	 * @return the value of the icons width
+	 */
 	public int getIconWidth() {
 		return width *3/2;
 	}
 	
+	/**
+	 * setter for model
+	 * @param model the mancala model you want to give to the pit
+	 */
 	public void setModel(MancalaModel model)
 	{
 		this.model = model;
 	}
 
 	@Override
+	/**
+	 * Paints the mancala icon, should only be called by containing component
+	 * @param c the component that is calling the function
+	 * @param g the graphics context
+	 * @param x the x origin point
+	 * @param y the y origin point
+	 */
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.draw(mancala);
@@ -57,6 +88,9 @@ public class MancalaIcon implements Icon, ChangeListener {
 	}
 
 	@Override
+	/**
+	 * listens for changes from model
+	 */
 	public void stateChanged(ChangeEvent e) {
 		value = model.getMancalaValue(player);
 		

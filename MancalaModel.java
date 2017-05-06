@@ -3,6 +3,11 @@ import java.util.ArrayList;
 import javax.swing.event.*;
 
 //stores the game data for a mancala board
+/**
+ * class that serves as model for a mancala game
+ * @author Justin Benassi
+ *
+ */
 public class MancalaModel {
 
 	//pits for the respective players
@@ -29,6 +34,10 @@ public class MancalaModel {
 
 	private ArrayList<ChangeListener> listeners;
 
+	/**
+	 * constructor for mancala model
+	 * @param initialPitCount initial number of beads in the pits, should be > 0
+	 */
 	public MancalaModel(int initialPitCount)
 	{
 		playerOnePits = new int[6];
@@ -61,11 +70,21 @@ public class MancalaModel {
 		listeners = new ArrayList<ChangeListener>();
 	}
 
+	/**
+	 * add change listener to the list
+	 * @param c the change listener to add
+	 */
 	public void addChangeListener(ChangeListener c)
 	{
 		listeners.add(c);
 	}
 
+	/**
+	 * returns the pit value of a chosen pit
+	 * @param player either player one or two
+	 * @param pit chosen pit, 1 through 6
+	 * @return the value of the selected pit
+	 */
 	public int getPitValue(Player player, int pit)
 	{
 		if (player == Player.ONE)
@@ -75,6 +94,12 @@ public class MancalaModel {
 		else return playerTwoPits[pit-1];
 	}
 
+
+	/**
+	 * gets mancala value for respective player
+	 * @param player the player whos mancala to return
+	 * @return the value of a mancala
+	 */
 	public int getMancalaValue(Player player)
 	{
 		if(player.equals(Player.ONE))
@@ -85,12 +110,19 @@ public class MancalaModel {
 			return playerTwoMancala;
 	}
 
+	/**
+	 * returns current player
+	 * @return the current player
+	 */
 	public Player getCurrentPlayer()
 	{
 		return currentPlayer;
 	}
 
-	//checks if game has ended
+	/**
+	 * checks of the game has ended (one side has 0 beads)
+	 * @return true if the game has ended, else false
+	 */
 	public boolean checkGameOver()
 	{
 		int one = 0;
@@ -110,6 +142,9 @@ public class MancalaModel {
 		else return false;
 	}
 
+	/**
+	 * switches the current player, effectively the end turn function. Resets undo counts.
+	 */
 	public void changeCurrentPlayer()
 	{
 		if(madeMoveThisTurn)
@@ -122,9 +157,15 @@ public class MancalaModel {
 			madeMoveThisTurn = false;
 			undoThisTurn = false;
 		}
+		oneUndos = 3;
+		twoUndos = 3;
 
 	}
 
+	/**
+	 * Used after a game has finished to determine who won
+	 * @return returns player one if one won, two if two, or tie otherwise
+	 */
 	public Player declareWinner()
 	{
 		if (playerOneMancala > playerTwoMancala)
@@ -138,7 +179,9 @@ public class MancalaModel {
 		else return Player.TIE;
 	}
 
-	//undo function
+	/**
+	 * Resets the board to the previous state if a move was made this turn, limit of 3 times a turn
+	 */
 	public void undo()
 	{
 		if (firstMove)
@@ -175,7 +218,12 @@ public class MancalaModel {
 		}
 	}
 
-	//returns true if move ends in current player's mancala or no move was made
+	/**
+	 * major mancala function for moving the beads. notifies the listeners of the changes it makes
+	 * @param player the current player
+	 * @param pitNumber which pit the move starts in
+	 * @return returns true if the move ends in a mancala or if the selected pit was empty, else false (end of turn)
+	 */
 	public boolean makeMove(Player player, int pitNumber)
 	{
 		if(!madeMoveThisTurn)
@@ -208,14 +256,18 @@ public class MancalaModel {
 					{
 						if (player == Player.ONE)
 						{
-							playerOneMancala++;
+							if(getCurrentPlayer() == Player.ONE)
+							{ playerOneMancala++; }
+							else remaining++;
 							player = Player.TWO;
 							pitNumber = -1;
 							currentPits = playerTwoPits;
 						}
 						else
 						{
-							playerTwoMancala++;
+							if(getCurrentPlayer() == Player.TWO)
+							{playerTwoMancala++;}
+							else remaining++;
 							player = Player.ONE;
 							pitNumber = -1;
 							currentPits = playerOnePits;
@@ -238,11 +290,32 @@ public class MancalaModel {
 				//first move check for undos
 				firstMove = true;
 
+				//allow for an undo
+				undoThisTurn = false;
+
 				//if -1, then move ends in mancala
 				if(pitNumber == -1)
 				{
 					madeMoveThisTurn = false;
 					return true;
+				}
+				else if(currentPlayer.equals(Player.ONE) && currentPits[pitNumber] == 1)
+				{
+					int total = 1 + playerTwoPits[5-pitNumber];
+					playerOnePits[pitNumber] = 0;
+					playerTwoPits[5-pitNumber] = 0;
+					playerOneMancala += total;
+					notifyListeners();
+					return false;
+				}
+				else if(currentPlayer.equals(Player.TWO) && currentPits[pitNumber] == 1)
+				{
+					int total = 1 + playerOnePits[5-pitNumber];
+					playerTwoPits[pitNumber] = 0;
+					playerOnePits[5-pitNumber] = 0;
+					playerOneMancala += total;
+					notifyListeners();
+					return false;
 				}
 				else return false;
 			}
@@ -251,20 +324,14 @@ public class MancalaModel {
 		else return true;
 	}
 
+	/**
+	 * notifies the change Listeners
+	 */
 	public void notifyListeners()
 	{
 		for (ChangeListener c: listeners)
 		{
 			c.stateChanged(new ChangeEvent(this));
-		}
-	}
-
-	public void printOut()
-	{
-		for(int i = 0; i <6; i++)
-		{
-		System.out.print(i + ": " + playerOnePits[i] + " ");
-		System.out.println(playerTwoPits[i]);
 		}
 	}
 
